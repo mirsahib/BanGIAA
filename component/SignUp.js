@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { StyleSheet, Text, View,Image,TextInput, Button} from 'react-native';
+import { StyleSheet, Text, View,Image,TextInput, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import Checkbox from 'expo-checkbox';
 import colors from '../assets/colors/colors';
 import welcomeImg from '../assets/images/welcome.png'
@@ -11,43 +11,45 @@ export default function SignUp(){
         <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image style={styles.welcomeImg} source={welcomeImg}></Image>    
-            </View>{/** image */}
+            </View>
             <View style={styles.formContainer}>
                 <TextInput
                     style={styles.input}
-                    value={'Enter Email Address'}
+                    placeholder={'Enter Email Address'}
+                    value={''}
                 />
                 <TextInput
                     style={styles.input}
-                    value={'Enter Password'}
+                    placeholder={'Enter Password'}
+                    value={''}
                 />
                 <TextInput
                     style={styles.input}
-                    value={'Confirm Password'}
+                    placeholder={'Confirm Password'}
+                    value={''}
                 />
-            </View>{/** sign up form */}
-            <View style={styles.annynomousContainer}>
-                <Checkbox
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? '#4630EB' : undefined}
-                />
-                <Text style={styles.paragraph}>Anynomous Sign In</Text>
-
-
-            </View>{/**anynomous checkbox */}
+                <View style={{flexDirection:'row',justifyContent:'center'}}>
+                    <Checkbox
+                        style={{marginHorizontal:15}}
+                        value={isChecked}
+                        onValueChange={setChecked}
+                        color={isChecked ? colors.tertiary : undefined}
+                    />
+                    <Text style={styles.paragraph}>Anynomous Sign In</Text>
+                </View>
+            </View>
             <View style={styles.buttonContainer}>
-                <Button
-                    style={styles.buttonStyle}
-                    title="Sign Up"
-                    color="#841584"
-                />
-                <Button
-                    style={styles.buttonStyle}
-                    title="Clear"
-                    color="#841584"
-                />
-            </View>{/**signin button */}
+                <View style={{paddingHorizontal:10}} >
+                    <TouchableOpacity style={styles.buttonStyle}>
+                        <Text style={{color:'white'}}>Sign Up</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{paddingHorizontal:10}}>
+                    <TouchableOpacity style={styles.buttonStyle}>
+                        <Text style={{color:'white'}}>Clear</Text>
+                    </TouchableOpacity>
+                </View>        
+            </View>
         </View>
     )
 }
@@ -57,15 +59,17 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor:colors.primary,
       fontFamily:'Poppins',
-      fontWeight:'bold'
+      fontWeight:'bold',
+      paddingTop:40
     },
     imageContainer:{
         flex:2,
-        paddingTop:50
+        justifyContent:"center"
     },
     formContainer:{
-        flex:1,
+        flex:2,
     },
     annynomousContainer:{
         flexDirection:'row',
@@ -74,7 +78,8 @@ const styles = StyleSheet.create({
     buttonContainer:{
         flex:1,
         flexDirection:'row',
-        justifyContent:'center'
+        justifyContent:'space-between',
+        paddingTop:15
     },
     welcomeImg:{
         width:300,
@@ -98,7 +103,12 @@ const styles = StyleSheet.create({
         backgroundColor:colors.tertiary
     },
     buttonStyle:{
-        height:10,
         width:150,
+        minHeight:50,
+        justifyContent:'center',
+        alignItems:'center',
+        borderRadius:20,
+        backgroundColor:colors.tertiary
     }
+    
   });
