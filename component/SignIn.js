@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
-import Checkbox from 'expo-checkbox';
 import colors from '../assets/colors/colors';
 import loginImg from '../assets/images/login.png'
 
@@ -9,7 +8,7 @@ export default function SignIn() {
         <KeyboardAvoidingView style={{ flex: 1 }}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
-                        <Image style={styles.welcomeImg} source={loginImg}></Image>
+                        <Image style={styles.loginImg} source={loginImg}></Image>
                     </View>
                     <View style={styles.formContainer}>
                         <TextInput
@@ -26,7 +25,7 @@ export default function SignIn() {
                     <View style={styles.buttonContainer}>
                         <View style={{ paddingHorizontal: 10 }} >
                             <TouchableOpacity style={styles.buttonStyle}>
-                                <Text style={{ color: 'white' }}>Sign Up</Text>
+                                <Text style={{ color: 'white' }}>Sign In</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ paddingHorizontal: 10 }}>
@@ -63,8 +62,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: 15
     },
-    welcomeImg: {
-        width: 300,
+    loginImg: {
+        width: 370,
         height: 260
     },
     input: {
