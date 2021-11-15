@@ -1,7 +1,7 @@
 ## BanGIAA
 Bangladesh grocery image annotation app
 
-## Instruction
+## Installation
 
 ## Contribution
 
