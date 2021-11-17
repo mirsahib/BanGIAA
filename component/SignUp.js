@@ -6,21 +6,21 @@ import welcomeImg from '../assets/images/welcome.png'
 
 export default function SignUp() {
     const [isChecked, setChecked] = useState(false);
-    const [isKeyboardOn,setKeyboard] = useState(false)
+    const [keyboardStatus,setKeyboardStatus] = useState(false)
 
     useEffect(()=>{
         const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
-                setKeyboard(!isKeyboardOn)
+                setKeyboardStatus(!keyboardStatus)
             });
         const handleKeyboardHide = Keyboard.addListener('keyboardDidHide',()=>{
-                setKeyboard(!isKeyboardOn)
+                setKeyboardStatus(!keyboardStatus)
             })
         //cleanup function
         return () => {
             handleKeyboardShow.remove()
             handleKeyboardHide.remove()
           };      
-    },[isKeyboardOn])
+    },[keyboardStatus])
 
     
     
@@ -33,25 +33,25 @@ export default function SignUp() {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
-                        <Image style={isKeyboardOn?styles.welcomeImgKbOn:styles.welcomeImgKbOff} source={welcomeImg}></Image>
+                        <Image style={keyboardStatus?styles.welcomeImgKbOn:styles.welcomeImgKbOff} source={welcomeImg}></Image>
                     </View>
-                    <View style={isKeyboardOn?styles.formContainerKbOn:styles.formContainer}>
+                    <View style={keyboardStatus?styles.formContainerKbOn:styles.formContainer}>
                         <TextInput
-                            style={isKeyboardOn?styles.inputKbOn:styles.input}
+                            style={keyboardStatus?styles.inputKbOn:styles.input}
                             placeholder={'Enter Email Address'}
                             value={''}
                         />
                         <TextInput
-                            style={isKeyboardOn?styles.inputKbOn:styles.input}
+                            style={keyboardStatus?styles.inputKbOn:styles.input}
                             placeholder={'Enter Password'}
                             value={''}
                         />
                         <TextInput
-                            style={isKeyboardOn?styles.inputKbOn:styles.input}
+                            style={keyboardStatus?styles.inputKbOn:styles.input}
                             placeholder={'Confirm Password'}
                             value={''}
                         />
-                        <View style={isKeyboardOn?styles.checkBoxContainerKbOn:styles.checkBoxContainer}>
+                        <View style={keyboardStatus?styles.checkBoxContainerKbOn:styles.checkBoxContainer}>
                             <Checkbox
                                 style={{ marginHorizontal: 15 }}
                                 value={isChecked}
