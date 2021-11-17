@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import React, { useState,useEffect} from 'react';
+import { StyleSheet, Text, View, Image, TextInput,TouchableWithoutFeedback,Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import colors from '../assets/colors/colors';
 import loginImg from '../assets/images/login.png'
 
 export default function SignIn() {
+    const [keyboardStatus,setKeyboardStatus] = useState(false)
+
+    useEffect(()=>{
+        const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
+                setKeyboardStatus(!keyboardStatus)
+            });
+        const handleKeyboardHide = Keyboard.addListener('keyboardDidHide',()=>{
+                setKeyboardStatus(!keyboardStatus)
+            })
+        //cleanup function
+        return () => {
+            handleKeyboardShow.remove()
+            handleKeyboardHide.remove()
+          };      
+    },[keyboardStatus])
+
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
-                        <Image style={styles.loginImg} source={loginImg}></Image>
+                        <Image style={keyboardStatus?styles.loginImgKbOn:styles.loginImg} source={loginImg}></Image>
                     </View>
                     <View style={styles.formContainer}>
                         <TextInput
@@ -35,6 +55,7 @@ export default function SignIn() {
                         </View>
                     </View>
                 </View>
+            </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     )
 }
@@ -62,9 +83,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: 15
     },
+    loginImgKbOn:{
+        width:300,
+        resizeMode:'contain'
+    },
     loginImg: {
         width: 370,
-        height: 260
     },
     input: {
         height: 50,
@@ -78,7 +102,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "#2F2E41",
         opacity: 60,
-        paddingLeft:15
+        paddingLeft: 15
     },
     inputFocused: {
         backgroundColor: colors.tertiary
