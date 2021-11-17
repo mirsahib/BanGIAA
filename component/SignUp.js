@@ -1,42 +1,64 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Keyboard, Image, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import colors from '../assets/colors/colors';
 import welcomeImg from '../assets/images/welcome.png'
 
 export default function SignUp() {
     const [isChecked, setChecked] = useState(false);
+    const [isKeyboardOn,setKeyboard] = useState(false)
+
+    useEffect(()=>{
+        const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
+                setKeyboard(!isKeyboardOn)
+            });
+        const handleKeyboardHide = Keyboard.addListener('keyboardDidHide',()=>{
+                setKeyboard(!isKeyboardOn)
+            })
+        //cleanup function
+        return () => {
+            handleKeyboardShow.remove()
+            handleKeyboardHide.remove()
+          };      
+    },[isKeyboardOn])
+
+    
+    
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
-                        <Image style={styles.welcomeImg} source={welcomeImg}></Image>
+                        <Image style={isKeyboardOn?styles.welcomeImgKbOn:styles.welcomeImgKbOff} source={welcomeImg}></Image>
                     </View>
-                    <View style={styles.formContainer}>
+                    <View style={isKeyboardOn?styles.formContainerKbOn:styles.formContainer}>
                         <TextInput
-                            style={styles.input}
+                            style={isKeyboardOn?styles.inputKbOn:styles.input}
                             placeholder={'Enter Email Address'}
                             value={''}
                         />
                         <TextInput
-                            style={styles.input}
+                            style={isKeyboardOn?styles.inputKbOn:styles.input}
                             placeholder={'Enter Password'}
                             value={''}
                         />
                         <TextInput
-                            style={styles.input}
+                            style={isKeyboardOn?styles.inputKbOn:styles.input}
                             placeholder={'Confirm Password'}
                             value={''}
                         />
-                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <View style={isKeyboardOn?styles.checkBoxContainerKbOn:styles.checkBoxContainer}>
                             <Checkbox
                                 style={{ marginHorizontal: 15 }}
                                 value={isChecked}
                                 onValueChange={setChecked}
                                 color={isChecked ? colors.tertiary : undefined}
                             />
-                            <Text style={{color:'white'}}>Anynomous Sign In</Text>
+                            <Text style={{ color: 'white' }}>Anynomous Sign In</Text>
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
@@ -52,7 +74,9 @@ export default function SignUp() {
                         </View>
                     </View>
                 </View>
+            </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
+
     )
 }
 
@@ -73,16 +97,33 @@ const styles = StyleSheet.create({
     formContainer: {
         flex: 2,
     },
+    formContainerKbOn: {
+        flex: 2,
+        marginBottom:40
+    },
+    checkBoxContainer:{
+        flexDirection: 'row',
+        justifyContent: 'center' 
+    },
+    checkBoxContainerKbOn:{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        paddingTop:10
+    },
     buttonContainer: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 15
     },
-    welcomeImg: {
+    welcomeImgKbOn: {
+        width: 200,
+        resizeMode:'contain'
+    },
+    welcomeImgKbOff: {
         width: 300,
-        height: 260
-    },
+        resizeMode:'contain'
+    }
+    ,
     input: {
         height: 50,
         width: 340,
@@ -95,7 +136,21 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "#2F2E41",
         opacity: 60,
-        paddingLeft:15
+        paddingLeft: 15
+    },
+    inputKbOn: {
+        height: 50,
+        width: 340,
+        margin: 5,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: colors.tertiary,
+        backgroundColor: 'white',
+        padding: 10,
+        fontSize: 18,
+        color: "#2F2E41",
+        opacity: 60,
+        paddingLeft: 15
     },
     inputFocused: {
         backgroundColor: colors.tertiary
@@ -107,6 +162,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 20,
         backgroundColor: colors.tertiary
-    }
-
+    },
 });
