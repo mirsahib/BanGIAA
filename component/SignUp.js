@@ -22,12 +22,15 @@ export default function SignUp({navigation}) {
           };      
     },[keyboardStatus])
 
+    const redirectToSignIn = ()=>{
+        navigation.navigate('SignIn')
+    }
+
     const handleSignUp = ()=>{
+        console.log(navigation)
         navigation.navigate('SignIn')
     }
     
-    
-
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -54,15 +57,9 @@ export default function SignUp({navigation}) {
                             placeholder={'Confirm Password'}
                             value={''}
                         />
-                        <View style={keyboardStatus?styles.checkBoxContainerKbOn:styles.checkBoxContainer}>
-                            <Checkbox
-                                style={{ marginHorizontal: 15 }}
-                                value={isChecked}
-                                onValueChange={setChecked}
-                                color={isChecked ? colors.tertiary : undefined}
-                            />
-                            <Text style={{ color: 'white' }}>Anynomous Sign In</Text>
-                        </View>
+                        <TouchableOpacity style={styles.checkBoxContainer} onPress={redirectToSignIn}>
+                            <Text style={{color:'white'}}>Already have an account ?</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={{ paddingHorizontal: 10 }} >
