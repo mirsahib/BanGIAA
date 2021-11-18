@@ -7,6 +7,7 @@ import welcomeImg from '../assets/images/welcome.png'
 export default function SignUp({navigation}) {
     const [isChecked, setChecked] = useState(false);
     const [keyboardStatus,setKeyboardStatus] = useState(false)
+    const [data,setData] = useState({email:'',password:'',confirmPassword:''})
 
     useEffect(()=>{
         const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
@@ -27,8 +28,12 @@ export default function SignUp({navigation}) {
     }
 
     const handleSignUp = ()=>{
-        console.log(navigation)
+        console.log(data)
         navigation.navigate('SignIn')
+    }
+
+    const handleClearBtn = ()=>{
+        setData({email:'',password:'',confirmPassword:''})   
     }
     
     return (
@@ -45,17 +50,22 @@ export default function SignUp({navigation}) {
                         <TextInput
                             style={keyboardStatus?styles.inputKbOn:styles.input}
                             placeholder={'Enter Email Address'}
-                            value={''}
+                            onChangeText={text=>setData({...data,email:text})}
+                            value={data.email}
                         />
                         <TextInput
                             style={keyboardStatus?styles.inputKbOn:styles.input}
                             placeholder={'Enter Password'}
-                            value={''}
+                            secureTextEntry={true}
+                            onChangeText={text=>setData({...data,password:text})}
+                            value={data.password}
                         />
                         <TextInput
                             style={keyboardStatus?styles.inputKbOn:styles.input}
                             placeholder={'Confirm Password'}
-                            value={''}
+                            secureTextEntry={true}
+                            onChangeText={text=>setData({...data,confirmPassword:text})}
+                            value={data.confirmPassword}
                         />
                         <TouchableOpacity style={styles.checkBoxContainer} onPress={redirectToSignIn}>
                             <Text style={{color:'white'}}>Already have an account ?</Text>
@@ -68,7 +78,7 @@ export default function SignUp({navigation}) {
                             </TouchableOpacity>
                         </View>
                         <View style={{ paddingHorizontal: 10 }}>
-                            <TouchableOpacity style={styles.buttonStyle}>
+                            <TouchableOpacity style={styles.buttonStyle} onPress={handleClearBtn}>
                                 <Text style={{ color: 'white' }}>Clear</Text>
                             </TouchableOpacity>
                         </View>
@@ -103,7 +113,8 @@ const styles = StyleSheet.create({
     },
     checkBoxContainer:{
         flexDirection: 'row',
-        justifyContent: 'center' 
+        justifyContent: 'center',
+        paddingTop:10
     },
     checkBoxContainerKbOn:{
         flexDirection: 'row',
