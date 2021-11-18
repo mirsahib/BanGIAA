@@ -13,11 +13,13 @@ import {
     Dimensions,
     KeyboardAvoidingView,
     TouchableOpacity,
-    ImageBackground
+    ImageBackground,
+    ScrollView
 } from 'react-native';
 import colors from '../assets/colors/colors';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
+import SuggestionList from './SuggestionList';
 
 
 const PreviewScreen = ({ photo }) => {
@@ -80,60 +82,26 @@ const PreviewScreen = ({ photo }) => {
                                         placeholder={'Class Name'}
                                         value={''}
                                     />
-                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Oil</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Water</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Paste</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Paste</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Paste</Text>
-                                        </TouchableOpacity>
-
-                                    </View>
+                                    <SuggestionList/>
                                     <TextInput
                                         style={styles.input}
                                         placeholder={'Product Name'}
                                         value={''}
                                     />
-                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Oil</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Water</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Paste</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Paste</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                            <Text>Paste</Text>
-                                        </TouchableOpacity>
-
-                                    </View>
+                                    <SuggestionList/>
                                     <TextInput
                                         style={styles.input}
                                         placeholder={'Measuring Unit'}
                                         value={''}
                                     />
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.primary }}>
                                             <Text>Kg/g</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.primary }}>
                                             <Text>l/ml</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.primary }}>
                                             <Text>Dozen/Pcs</Text>
                                         </TouchableOpacity>
 
