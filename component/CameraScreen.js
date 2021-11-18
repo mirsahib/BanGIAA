@@ -5,7 +5,7 @@ import colors from '../assets/colors/colors';
 import PreviewScreen from './PreviewScreen';
 
 
-export default function CameraScreen() {
+export default function CameraScreen({navigation}) {
     const [hasCameraPermission, setCameraPermission] = useState(null)
     const [previewVisible, setPreviewVisible] = useState(false)
     const [captureImage, setCapturedImage] = useState(null)
@@ -28,7 +28,7 @@ export default function CameraScreen() {
     return (
         <View style={styles.container}>
             {previewVisible && captureImage ?
-                (<PreviewScreen photo={captureImage} />) :
+                (<PreviewScreen photo={captureImage} navigation={navigation}/>) :
                 <Camera
                     style={{ flex: 1 }}
                     ref={cameraRef}
@@ -109,7 +109,6 @@ export default function CameraScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: Platform.OS === 'android' ? 25 : 0
     },
     camera: {
         flex: 1,

@@ -4,7 +4,7 @@ import Checkbox from 'expo-checkbox';
 import colors from '../assets/colors/colors';
 import welcomeImg from '../assets/images/welcome.png'
 
-export default function SignUp() {
+export default function SignUp({navigation}) {
     const [isChecked, setChecked] = useState(false);
     const [keyboardStatus,setKeyboardStatus] = useState(false)
 
@@ -22,6 +22,9 @@ export default function SignUp() {
           };      
     },[keyboardStatus])
 
+    const handleSignUp = ()=>{
+        navigation.navigate('SignIn')
+    }
     
     
 
@@ -63,7 +66,7 @@ export default function SignUp() {
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={{ paddingHorizontal: 10 }} >
-                            <TouchableOpacity style={styles.buttonStyle}>
+                            <TouchableOpacity style={styles.buttonStyle} onPress={handleSignUp}>
                                 <Text style={{ color: 'white' }}>Sign Up</Text>
                             </TouchableOpacity>
                         </View>

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TextInput,TouchableWithoutFeedback,Keybo
 import colors from '../assets/colors/colors';
 import loginImg from '../assets/images/login.png'
 
-export default function SignIn() {
+export default function SignIn({navigation}) {
     const [keyboardStatus,setKeyboardStatus] = useState(false)
 
     useEffect(()=>{
@@ -19,6 +19,10 @@ export default function SignIn() {
             handleKeyboardHide.remove()
           };      
     },[keyboardStatus])
+
+    const handleSignIn = ()=>{
+        navigation.navigate('CameraScreen')
+    }
 
     return (
         <KeyboardAvoidingView
@@ -44,7 +48,7 @@ export default function SignIn() {
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={{ paddingHorizontal: 10 }} >
-                            <TouchableOpacity style={styles.buttonStyle}>
+                            <TouchableOpacity style={styles.buttonStyle} onPress={handleSignIn}>
                                 <Text style={{ color: 'white' }}>Sign In</Text>
                             </TouchableOpacity>
                         </View>
