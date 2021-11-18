@@ -1,9 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, Alert, Modal, StyleSheet, Text, Pressable, View, TouchableWithoutFeedback, Keyboard, TextInput, Dimensions, KeyboardAvoidingView, TouchableOpacity, ImageBackground } from 'react-native';
+import {
+    Platform,
+    Alert,
+    Modal,
+    StyleSheet,
+    Text,
+    Pressable,
+    View,
+    TouchableWithoutFeedback,
+    Keyboard,
+    TextInput,
+    Dimensions,
+    KeyboardAvoidingView,
+    TouchableOpacity,
+    ImageBackground
+} from 'react-native';
 import colors from '../assets/colors/colors';
-import splashImg from '../assets/splash.png'
+import { MaterialIcons } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons';
 
-const PreviewScreen = ({photo}) => {
+
+const PreviewScreen = ({ photo }) => {
     const [modalVisible, setModalVisible] = useState(true);
     const [keyboardStatus, setKeyboardStatus] = useState(false)
 
@@ -21,101 +38,124 @@ const PreviewScreen = ({photo}) => {
         };
     }, [keyboardStatus])
 
+    const handleModelVisibility = () => {
+        console.log('click')
+        setModalVisible(!modalVisible)
+    }
+
     return (
 
         <View style={styles.centeredView}>
-            <ImageBackground style={{width:'100%',height:'100%'}} source={{uri: photo && photo.uri}}>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                        setModalVisible(!modalVisible);
+            <ImageBackground style={{ width: '100%', height: '100%' }} source={{ uri: photo && photo.uri }}>
+                <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onPress={handleModelVisibility}>
+                    <View style={{
+                        position: 'absolute',
+                        left: '5%',
+                        top: '10%',
                     }}>
-                    <TouchableWithoutFeedback onPress={() => setModalVisible(!modalVisible)}>
-                        <View style={styles.centeredView}>
-                            <View style={keyboardStatus ? styles.modalViewKbOn : styles.modalView}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder={'Class Name'}
-                                    value={''}
-                                />
-                                <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Oil</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Water</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Paste</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Paste</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Paste</Text>
-                                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor:'#FFF',
+                                borderRadius: 50,
+                                height: 25,
+                                width: 25
+                            }}
+                        >
+                            <FontAwesome size={24} style={{color:colors.tertiary}} name="eye"></FontAwesome>
+                        </TouchableOpacity>
+                    </View>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            Alert.alert('Modal has been closed.');
+                            setModalVisible(!modalVisible);
+                        }}>
+                        <TouchableWithoutFeedback>
+                            <View style={styles.centeredView}>
+                                <View style={keyboardStatus ? styles.modalViewKbOn : styles.modalView}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder={'Class Name'}
+                                        value={''}
+                                    />
+                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Oil</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Water</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Paste</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Paste</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Paste</Text>
+                                        </TouchableOpacity>
 
-                                </View>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder={'Product Name'}
-                                    value={''}
-                                />
-                                <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Oil</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Water</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Paste</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Paste</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Paste</Text>
-                                    </TouchableOpacity>
+                                    </View>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder={'Product Name'}
+                                        value={''}
+                                    />
+                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Oil</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Water</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Paste</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Paste</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Paste</Text>
+                                        </TouchableOpacity>
 
-                                </View>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder={'Measuring Unit'}
-                                    value={''}
-                                />
-                                <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Kg/g</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>l/ml</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
-                                        <Text>Dozen/Pcs</Text>
-                                    </TouchableOpacity>
+                                    </View>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder={'Measuring Unit'}
+                                        value={''}
+                                    />
+                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Kg/g</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>l/ml</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.tertiary }}>
+                                            <Text>Dozen/Pcs</Text>
+                                        </TouchableOpacity>
 
-                                </View>
+                                    </View>
 
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Pressable
-                                        style={[styles.button]}
-                                        onPress={() => setModalVisible(!modalVisible)}>
-                                        <Text style={styles.textStyle}>Save</Text>
-                                    </Pressable>
-                                    <Pressable
-                                        style={[styles.button]}
-                                        onPress={() => setModalVisible(!modalVisible)}>
-                                        <Text style={styles.textStyle}>Preview</Text>
-                                    </Pressable>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Pressable
+                                            style={[styles.button]}
+                                            onPress={() => setModalVisible(!modalVisible)}>
+                                            <Text style={styles.textStyle}>Save</Text>
+                                        </Pressable>
+                                        <Pressable
+                                            style={[styles.button]}
+                                            onPress={() => setModalVisible(!modalVisible)}>
+                                            <Text style={styles.textStyle}>Retake</Text>
+                                        </Pressable>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Modal>
+                        </TouchableWithoutFeedback>
+                    </Modal>
+                </TouchableOpacity>
             </ImageBackground>
         </View>
     );
