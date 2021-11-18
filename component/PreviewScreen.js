@@ -20,10 +20,9 @@ import colors from '../assets/colors/colors';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
 import SuggestionList from './SuggestionList';
-import { NavigationContainer } from '@react-navigation/native';
 
 
-const PreviewScreen = ({ photo}) => {
+const PreviewScreen = ({ photo }) => {
     const [modalVisible, setModalVisible] = useState(true);
     const [keyboardStatus, setKeyboardStatus] = useState(false)
 
@@ -47,7 +46,6 @@ const PreviewScreen = ({ photo}) => {
     }
     const handleRetakeBtn = ()=>{
         console.log('retake')
-        
     }
 
     return (
