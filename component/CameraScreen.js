@@ -5,10 +5,13 @@ import colors from '../assets/colors/colors';
 import PreviewScreen from './PreviewScreen';
 
 
-export default function CameraScreen({navigation}) {
+export default function CameraScreen({ navigation }) {
     const [hasCameraPermission, setCameraPermission] = useState(null)
     const [previewVisible, setPreviewVisible] = useState(false)
     const [captureImage, setCapturedImage] = useState(null)
+    const [flashMode, setFlashMode] = useState('off')
+    const [data,setData] = useState({className:'',productName:'',measuringUnit:''})
+    
     const cameraRef = useRef(null)
 
     useEffect(async () => {
@@ -24,12 +27,33 @@ export default function CameraScreen({navigation}) {
             setCapturedImage(data)
         }
     }
+    const handleFlashMode = () => {
+        console.log(flashMode)
+        if (flashMode === 'on') {
+            setFlashMode('off')
+        } else if (flashMode === 'off') {
+            setFlashMode('on')
+        } else {
+            setFlashMode('auto')
+        }
+    }
+
+    const handleRetakeBtn = ()=>{
+        setCapturedImage(null)
+        setPreviewVisible(false)
+        console.log('camera retake')
+    }
+    const handleSaveBtn = ()=>{
+        console.log('data',data)
+        navigation.navigate('ImageScreen')
+    }
 
     return (
         <View style={styles.container}>
             {previewVisible && captureImage ?
-                (<PreviewScreen photo={captureImage} navigation={navigation}/>) :
+                (<PreviewScreen photo={captureImage} state={data} setState={setData} handleSaveBtn={handleSaveBtn} handleRetake={handleRetakeBtn}/>) :
                 <Camera
+                    flashMode={flashMode}
                     style={{ flex: 1 }}
                     ref={cameraRef}
                 >
@@ -50,6 +74,7 @@ export default function CameraScreen({navigation}) {
                             }}
                         >
                             <TouchableOpacity
+                                onPress={handleFlashMode}
                                 style={{
                                     backgroundColor: '#fff',
                                     borderRadius: 50,
