@@ -1,10 +1,13 @@
 import React, { useState,useEffect} from 'react';
 import { StyleSheet, Text, View, Image, TextInput,TouchableWithoutFeedback,Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import isEmpty from './helper';
 import colors from '../assets/colors/colors';
 import loginImg from '../assets/images/login.png'
 
 export default function SignIn({navigation}) {
     const [keyboardStatus,setKeyboardStatus] = useState(false)
+    const [data,setData] = useState({email:'',password:''})
 
     useEffect(()=>{
         const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
@@ -20,8 +23,19 @@ export default function SignIn({navigation}) {
           };      
     },[keyboardStatus])
 
-    const handleSignIn = ()=>{
-        navigation.navigate('CameraScreen')
+    const handleSignIn = async()=>{
+        try {
+            if(isEmpty(data)){
+                const jsonVal = JSON.stringify(data)
+                await AsyncStorage.setItem('user',jsonVal)
+                console.log(jsonVal)
+                navigation.navigate('CameraScreen')
+            }else{
+                console.log('field empty')
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -38,12 +52,15 @@ export default function SignIn({navigation}) {
                         <TextInput
                             style={styles.input}
                             placeholder={'Enter Email Address'}
-                            value={''}
+                            onChangeText={text=>setData({...data,email:text})}
+                            value={data.email}
                         />
                         <TextInput
                             style={styles.input}
                             placeholder={'Enter Password'}
-                            value={''}
+                            secureTextEntry={true}
+                            onChangeText={text=>setData({...data,password:text})}
+                            value={data.password}
                         />
                     </View>
                     <View style={styles.buttonContainer}>
