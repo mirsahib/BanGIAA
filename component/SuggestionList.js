@@ -27,9 +27,9 @@ export default function SuggestionList() {
     return (
         
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                {data.map(item=>{
+                {data.map((item,index)=>{
                     return (
-                        <TouchableOpacity style={
+                        <TouchableOpacity key={index} style={
                             {paddingHorizontal:2}
                             }>
                             <Text style={{borderRadius:10,paddingHorizontal:5,backgroundColor:colors.primary}}>{item}</Text>
