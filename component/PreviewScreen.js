@@ -22,7 +22,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import SuggestionList from './SuggestionList';
 
 
-const PreviewScreen = ({ photo }) => {
+const PreviewScreen = ({ photo,handleSaveBtn,handleRetake,state,setState}) => {
     const [modalVisible, setModalVisible] = useState(true);
     const [keyboardStatus, setKeyboardStatus] = useState(false)
 
@@ -41,12 +41,8 @@ const PreviewScreen = ({ photo }) => {
     }, [keyboardStatus])
 
     const handleModelVisibility = () => {
-        console.log('click')
         setModalVisible(!modalVisible)
-    }
-    const handleRetakeBtn = ()=>{
-        console.log('retake')
-    }
+    } 
 
     return (
 
@@ -82,20 +78,23 @@ const PreviewScreen = ({ photo }) => {
                                 <View style={keyboardStatus ? styles.modalViewKbOn : styles.modalView}>
                                     <TextInput
                                         style={styles.input}
+                                        onChangeText={text=>setState({...state,className:text})}
                                         placeholder={'Class Name'}
-                                        value={''}
+                                        value={state.className}
                                     />
                                     <SuggestionList/>
                                     <TextInput
                                         style={styles.input}
+                                        onChangeText={text=>setState({...state,productName:text})}
                                         placeholder={'Product Name'}
-                                        value={''}
+                                        value={state.productName}
                                     />
                                     <SuggestionList/>
                                     <TextInput
                                         style={styles.input}
+                                        onChangeText={text=>setState({...state,measuringUnit:text})}
                                         placeholder={'Measuring Unit'}
-                                        value={''}
+                                        value={state.measuringUnit}
                                     />
                                     <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                                         <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.primary }}>
@@ -111,16 +110,16 @@ const PreviewScreen = ({ photo }) => {
                                     </View>
 
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Pressable
-                                            style={[styles.button]}
-                                            onPress={() => setModalVisible(!modalVisible)}>
+                                        <TouchableOpacity
+                                            style={styles.button}
+                                            onPress={handleSaveBtn}>
                                             <Text style={styles.textStyle}>Save</Text>
-                                        </Pressable>
-                                        <Pressable
-                                            style={[styles.button]}
-                                            onPress={handleRetakeBtn}>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={styles.button}
+                                            onPress={handleRetake}>
                                             <Text style={styles.textStyle}>Retake</Text>
-                                        </Pressable>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                             </View>
