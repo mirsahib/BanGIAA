@@ -29,10 +29,14 @@ export default function SignUp({navigation}) {
 
     const handleSignUp = async ()=>{
         try {
-            const jsonVal = JSON.stringify(data)
-            await AsyncStorage.setItem('user',jsonVal)
-            console.log(jsonVal)
-            navigation.navigate('CameraScreen')
+            if(isEmpty(data)){
+                const jsonVal = JSON.stringify(data)
+                await AsyncStorage.setItem('user',jsonVal)
+                console.log(jsonVal)
+                navigation.navigate('CameraScreen')
+            }else{
+                console.log('field empty')
+            }
         } catch (error) {
             console.log(error)
         }
