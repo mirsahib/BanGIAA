@@ -11,7 +11,6 @@ export default function CameraScreen({ navigation }) {
     const [captureImage, setCapturedImage] = useState(null)
     const [flashMode, setFlashMode] = useState('off')
     const [data,setData] = useState({className:'',productName:'',measuringUnit:''})
-    
     const cameraRef = useRef(null)
 
     useEffect(async () => {
