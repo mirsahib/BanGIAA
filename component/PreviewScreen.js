@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     modalViewKbOn: {
         backgroundColor: colors.secondary,
         width: Dimensions.get('window').width,
-        height: '65%',
+        height: '67%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         alignItems: 'center',
