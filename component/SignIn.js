@@ -1,13 +1,14 @@
 import React, { useState,useEffect} from 'react';
 import { StyleSheet, Text, View, Image, TextInput,TouchableWithoutFeedback,Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import isEmpty from './helper';
+import formValidation from './helper';
 import colors from '../assets/colors/colors';
 import loginImg from '../assets/images/login.png'
 
 export default function SignIn({navigation}) {
     const [keyboardStatus,setKeyboardStatus] = useState(false)
     const [data,setData] = useState({email:'',password:''})
+    const [errorMessage,setErrorMessage] = useState("")
 
     useEffect(()=>{
         const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
@@ -25,13 +26,18 @@ export default function SignIn({navigation}) {
 
     const handleSignIn = async()=>{
         try {
-            if(isEmpty(data)){
+            if(!formValidation.isEmpty(data)){
+                setErrorMessage("Field is empty")
+                console.log("Field is empty")
+            }else if(!formValidation.validateEmail(data.email)){
+                setErrorMessage("Not a valid email")
+                console.log("Not a valid email")
+            }else{
+                //make api call
                 const jsonVal = JSON.stringify(data)
                 await AsyncStorage.setItem('user',jsonVal)
                 console.log(jsonVal)
                 navigation.navigate('CameraScreen')
-            }else{
-                console.log('field empty')
             }
         } catch (error) {
             console.log(error)
@@ -55,13 +61,16 @@ export default function SignIn({navigation}) {
                             onChangeText={text=>setData({...data,email:text})}
                             value={data.email}
                         />
-                        <TextInput
-                            style={styles.input}
-                            placeholder={'Enter Password'}
-                            secureTextEntry={true}
-                            onChangeText={text=>setData({...data,password:text})}
-                            value={data.password}
-                        />
+                        <View style={{alignItems:'center'}}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder={'Enter Password'}
+                                secureTextEntry={true}
+                                onChangeText={text=>setData({...data,password:text})}
+                                value={data.password}
+                            />
+                            {errorMessage ? <Text style={{color:'white'}}>{errorMessage}</Text>:<Text style={{color:'white'}}></Text>}
+                        </View>
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={{ paddingHorizontal: 10 }} >

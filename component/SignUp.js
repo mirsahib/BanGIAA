@@ -45,6 +45,7 @@ export default function SignUp({navigation}) {
                 console.log("Password does not match")
             }else{
                 const jsonVal = JSON.stringify(data)
+                //make api call
                 await AsyncStorage.setItem('user',jsonVal)
                 console.log(jsonVal)
                 navigation.navigate('CameraScreen')
