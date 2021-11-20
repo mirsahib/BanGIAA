@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Platform,
     Alert,
     Modal,
     StyleSheet,
     Text,
-    Pressable,
     View,
     TouchableWithoutFeedback,
     Keyboard,
     TextInput,
     Dimensions,
-    KeyboardAvoidingView,
     TouchableOpacity,
     ImageBackground,
-    ScrollView
 } from 'react-native';
 import colors from '../assets/colors/colors';
-import { MaterialIcons } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
 import SuggestionList from './SuggestionList';
+import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 
 
-const PreviewScreen = ({ photo,handleSaveBtn,handleRetake,state,setState}) => {
+const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) => {
     const [modalVisible, setModalVisible] = useState(true);
     const [keyboardStatus, setKeyboardStatus] = useState(false)
 
@@ -42,29 +38,20 @@ const PreviewScreen = ({ photo,handleSaveBtn,handleRetake,state,setState}) => {
 
     const handleModelVisibility = () => {
         setModalVisible(!modalVisible)
-    } 
+    }
+    const handlePreview = () => {
+        console.log('click')
+    }
+
+    const onSelect = (index, value) => {
+        console.log(`Selected index: ${index} , value: ${value}`)
+    }
 
     return (
 
         <View style={styles.centeredView}>
             <ImageBackground style={{ width: '100%', height: '100%' }} source={{ uri: photo && photo.uri }}>
                 <TouchableOpacity activeOpacity={1} style={{ flex: 1 }} onPress={handleModelVisibility}>
-                    <View style={{
-                        position: 'absolute',
-                        left: '5%',
-                        top: '10%',
-                    }}>
-                        <TouchableOpacity
-                            style={{
-                                backgroundColor:'#FFF',
-                                borderRadius: 50,
-                                height: 25,
-                                width: 25
-                            }}
-                        >
-                            <FontAwesome size={24} style={{color:colors.tertiary}} name="eye"></FontAwesome>
-                        </TouchableOpacity>
-                    </View>
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -73,40 +60,58 @@ const PreviewScreen = ({ photo,handleSaveBtn,handleRetake,state,setState}) => {
                             Alert.alert('Modal has been closed.');
                             setModalVisible(!modalVisible);
                         }}>
-                        <TouchableWithoutFeedback>
+                        {/* <View style={{
+                            position: 'absolute',
+                            left: '5%',
+                            top: '10%',
+                        }}>
+                            <TouchableOpacity
+                                onPress={()=>{console.log('click')}}
+                                style={{
+                                    backgroundColor: '#FFF',
+                                    borderRadius: 50,
+                                    height: 25,
+                                    width: 25
+                                }}
+                            >
+                                <FontAwesome size={24} style={{ color: colors.tertiary }} name="eye"></FontAwesome>
+                            </TouchableOpacity>
+                        </View> */}
+                        <TouchableWithoutFeedback onPress={()=>{setModalVisible(!modalVisible)}}>
                             <View style={styles.centeredView}>
                                 <View style={keyboardStatus ? styles.modalViewKbOn : styles.modalView}>
                                     <TextInput
                                         style={styles.input}
-                                        onChangeText={text=>setState({...state,className:text})}
+                                        onChangeText={text => setState({ ...state, className: text })}
                                         placeholder={'Class Name'}
                                         value={state.className}
                                     />
-                                    <SuggestionList/>
+                                    <SuggestionList />
                                     <TextInput
                                         style={styles.input}
-                                        onChangeText={text=>setState({...state,productName:text})}
+                                        onChangeText={text => setState({ ...state, productName: text })}
                                         placeholder={'Product Name'}
                                         value={state.productName}
                                     />
-                                    <SuggestionList/>
-                                    <TextInput
-                                        style={styles.input}
-                                        onChangeText={text=>setState({...state,measuringUnit:text})}
-                                        placeholder={'Measuring Unit'}
-                                        value={state.measuringUnit}
-                                    />
-                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.primary }}>
-                                            <Text>Kg/g</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.primary }}>
-                                            <Text>l/ml</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{ paddingHorizontal: 3, marginHorizontal: 2, borderRadius: 5, backgroundColor: colors.primary }}>
-                                            <Text>Dozen/Pcs</Text>
-                                        </TouchableOpacity>
+                                    <SuggestionList />
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={{ fontSize: 18, color: "#FFF", paddingTop: 5 }}>Unit :</Text>
+                                        <RadioGroup style={{ flexDirection: 'row', }} color={colors.tertiary}
+                                            onSelect={(index, value) => onSelect(index, value)}
+                                        >
+                                            <RadioButton value={'item1'} >
+                                                <Text>Kg/g</Text>
+                                            </RadioButton>
 
+                                            <RadioButton value={'item2'}>
+                                                <Text>L/ml</Text>
+                                            </RadioButton>
+
+                                            <RadioButton value={'item3'}>
+                                                <Text>Dozen/PCs</Text>
+                                            </RadioButton>
+
+                                        </RadioGroup>
                                     </View>
 
                                     <View style={{ flexDirection: 'row' }}>
@@ -140,20 +145,22 @@ const styles = StyleSheet.create({
     modalView: {
         backgroundColor: colors.secondary,
         width: Dimensions.get('window').width,
-        height: '50%',
+        height: '45%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         alignItems: 'center',
-        paddingTop: 20
+        paddingTop: 20,
+        paddingBottom: 20
     },
     modalViewKbOn: {
         backgroundColor: colors.secondary,
         width: Dimensions.get('window').width,
-        height: '75%',
+        height: '65%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         alignItems: 'center',
-        paddingTop: 20
+        paddingTop: 20,
+        paddingBottom: 20
     },
     button: {
         width: 110,
