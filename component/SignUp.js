@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Keyboard, Image, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import isEmpty from './helper';
+import formValidation from './helper';
 import colors from '../assets/colors/colors';
 import welcomeImg from '../assets/images/welcome.png'
 
@@ -9,6 +9,7 @@ export default function SignUp({navigation}) {
     const [isChecked, setChecked] = useState(false);
     const [keyboardStatus,setKeyboardStatus] = useState(false)
     const [data,setData] = useState({email:'',password:'',confirmPassword:''})
+    const [errorMessage,setErrorMessage] = useState("")
 
     useEffect(()=>{
         const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
@@ -30,13 +31,23 @@ export default function SignUp({navigation}) {
 
     const handleSignUp = async ()=>{
         try {
-            if(isEmpty(data)){
+            if(!formValidation.isEmpty(data)){
+                setErrorMessage("Field is empty")
+                console.log("Field is empty")
+            }else if(!formValidation.validateEmail(data.email)){
+                setErrorMessage("Not a valid email")
+                console.log("Not a valid email")
+            }else if(data.password<6){
+                setErrorMessage("Field is empty")
+                console.log("Password must be 6 character long")
+            }else if(data.password!=data.confirmPassword){
+                setErrorMessage("Password does not match")
+                console.log("Password does not match")
+            }else{
                 const jsonVal = JSON.stringify(data)
                 await AsyncStorage.setItem('user',jsonVal)
                 console.log(jsonVal)
                 navigation.navigate('CameraScreen')
-            }else{
-                console.log('field empty')
             }
         } catch (error) {
             console.log(error)
@@ -58,29 +69,42 @@ export default function SignUp({navigation}) {
                         <Image style={keyboardStatus?styles.welcomeImgKbOn:styles.welcomeImgKbOff} source={welcomeImg}></Image>
                     </View>
                     <View style={keyboardStatus?styles.formContainerKbOn:styles.formContainer}>
-                        <TextInput
-                            style={keyboardStatus?styles.inputKbOn:styles.input}
-                            placeholder={'Enter Email Address'}
-                            onChangeText={text=>setData({...data,email:text})}
-                            value={data.email}
-                        />
-                        <TextInput
-                            style={keyboardStatus?styles.inputKbOn:styles.input}
-                            placeholder={'Enter Password'}
-                            secureTextEntry={true}
-                            onChangeText={text=>setData({...data,password:text})}
-                            value={data.password}
-                        />
-                        <TextInput
-                            style={keyboardStatus?styles.inputKbOn:styles.input}
-                            placeholder={'Confirm Password'}
-                            secureTextEntry={true}
-                            onChangeText={text=>setData({...data,confirmPassword:text})}
-                            value={data.confirmPassword}
-                        />
-                        <TouchableOpacity style={styles.checkBoxContainer} onPress={redirectToSignIn}>
-                            <Text style={{color:'white'}}>Already have an account ?</Text>
-                        </TouchableOpacity>
+                        <View style={{alignItems:'center'}}>
+                            <TextInput
+                                style={keyboardStatus?styles.inputKbOn:styles.input}
+                                placeholder={'Enter Email Address'}
+                                onChangeText={text=>setData({...data,email:text})}
+                                value={data.email}
+                            />
+                            {/* onchange form validation here*/}
+                            {/* {errorMessage ? <Text style={{color:'white'}}>{errorMessage}</Text>:<Text style={{color:'white'}}></Text>} */}
+                        </View>
+                        <View style={{alignItems:'center'}}>
+                            <TextInput
+                                style={keyboardStatus?styles.inputKbOn:styles.input}
+                                placeholder={'Enter Password'}
+                                secureTextEntry={true}
+                                onChangeText={text=>setData({...data,password:text})}
+                                value={data.password}
+                            />
+                            {/* onchange form validation here*/}
+                            {/* {errorMessage ? <Text style={{color:'white'}}>{errorMessage}</Text>:<Text style={{color:'white'}}></Text>} */}
+                        </View>
+                        <View style={{alignItems:'center'}}>
+                            <TextInput
+                                style={keyboardStatus?styles.inputKbOn:styles.input}
+                                placeholder={'Confirm Password'}
+                                secureTextEntry={true}
+                                onChangeText={text=>setData({...data,confirmPassword:text})}
+                                value={data.confirmPassword}
+                            />
+                            {errorMessage ? <Text style={{color:'white'}}>{errorMessage}</Text>:<Text style={{color:'white'}}></Text>}
+                        </View>
+                        {keyboardStatus? <Text></Text>:
+                            <TouchableOpacity style={styles.checkBoxContainer} onPress={redirectToSignIn}>
+                                <Text style={{color:'white'}}>Already have an account ?</Text>
+                            </TouchableOpacity>
+                        }
                     </View>
                     <View style={styles.buttonContainer}>
                         <View style={{ paddingHorizontal: 10 }} >
@@ -120,17 +144,17 @@ const styles = StyleSheet.create({
     },
     formContainerKbOn: {
         flex: 2,
-        marginBottom:40
+        marginBottom:55
     },
     checkBoxContainer:{
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingTop:10
+        paddingTop:10,
     },
     checkBoxContainerKbOn:{
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingTop:10
+        paddingTop:10,
     },
     buttonContainer: {
         flex: 1,
