@@ -4,8 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import CameraScreen from './CameraScreen';
-import PreviewScreen from './PreviewScreen';
-import colors from '../assets/colors/colors';
 import ImageList from './ImageList';
 
 const Stack = createNativeStackNavigator();
