@@ -47,7 +47,8 @@ export default function SignUp({navigation}) {
                 console.log("Password does not match")
             }else{
                 //make api call
-                createUser(CREATE_USER_API,data).then(async (response)=>{
+                const {confirmPassword,...userData} = data
+                createUser(CREATE_USER_API,userData).then(async (response)=>{
                     console.log('save',response)
                     if(response && response.userId){
                         await AsyncStorage.setItem('userId',response.userId)
