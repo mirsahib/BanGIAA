@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, Platform, View, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
+import { uploadImage,uploadData } from './api';
+import formValidation from './helper'
+import {UPLOAD_IMAGE_API,UPLOAD_DATA_API} from "@env"
 import colors from '../assets/colors/colors';
 import PreviewScreen from './PreviewScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function CameraScreen({ navigation }) {
@@ -14,16 +18,25 @@ export default function CameraScreen({ navigation }) {
     const cameraRef = useRef(null)
 
     useEffect(async () => {
-        const { status } = await Camera.requestCameraPermissionsAsync()
-        setCameraPermission(status === 'granted')
+        try {
+            const { status } = await Camera.requestCameraPermissionsAsync()
+            setCameraPermission(status === 'granted')
+        } catch (error) {
+            console.log(error)
+        }
     }, [])
 
     const takePicture = async () => {
         if (cameraRef) {
-            const data = await cameraRef.current.takePictureAsync()
-            console.log('image', data.uri)
-            setPreviewVisible(true)
-            setCapturedImage(data)
+            try {
+                const option =  { quality: 0.7, base64: true };
+                const data = await cameraRef.current.takePictureAsync(option)
+                console.log('image', data.uri)
+                setPreviewVisible(true)
+                setCapturedImage(data)
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
     const handleFlashMode = () => {
@@ -42,9 +55,27 @@ export default function CameraScreen({ navigation }) {
         setPreviewVisible(false)
         console.log('camera retake')
     }
-    const handleSaveBtn = ()=>{
-        console.log('data',data)
-        navigation.navigate('ImageScreen')
+    const handleSaveBtn = async ()=>{
+        console.log(data)
+        try {
+            if(formValidation.isEmpty(data)){
+                const cloudRes = await uploadImage(UPLOAD_IMAGE_API,captureImage.base64)
+                console.log('cloud response',cloudRes.public_id)
+                if(cloudRes){
+                    data.image = cloudRes.public_id
+                    data.userId = await AsyncStorage.getItem('userId')
+                    console.log('data',data)
+                    const realmRes = await uploadData(UPLOAD_DATA_API,data)
+                    console.log('realm res',realmRes)
+                    setData({className:'',productName:'',measuringUnit:''})
+                    //navigation.navigate('ImageScreen')
+                }
+            }else{
+                console.log("Field is empty")
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
