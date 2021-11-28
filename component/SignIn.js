@@ -42,7 +42,7 @@ export default function SignIn({navigation}) {
                         setErrorMessage(response.error)
                     }else{
                         console.log(response._id)
-                        await AsyncStorage.setItem('user',response._id)
+                        await AsyncStorage.setItem('userId',response._id)
                         navigation.navigate('CameraScreen')
                     }
                 }).catch(error=>{
