@@ -45,6 +45,7 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
 
     const onSelect = (index, value) => {
         console.log(`Selected index: ${index} , value: ${value}`)
+        setState({...state,measuringUnit:value})
     }
 
     return (
@@ -99,15 +100,15 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
                                         <RadioGroup style={{ flexDirection: 'row', }} color={colors.tertiary}
                                             onSelect={(index, value) => onSelect(index, value)}
                                         >
-                                            <RadioButton value={'item1'} >
+                                            <RadioButton value={'Kg/g'} >
                                                 <Text>Kg/g</Text>
                                             </RadioButton>
 
-                                            <RadioButton value={'item2'}>
+                                            <RadioButton value={'L/ml'}>
                                                 <Text>L/ml</Text>
                                             </RadioButton>
 
-                                            <RadioButton value={'item3'}>
+                                            <RadioButton value={'Dozen/PCs'}>
                                                 <Text>Dozen/PCs</Text>
                                             </RadioButton>
 
