@@ -2,6 +2,8 @@ import React, { useState,useEffect} from 'react';
 import { StyleSheet, Text, View, Image, TextInput,TouchableWithoutFeedback,Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import formValidation from './helper';
+import {READ_USER_API} from "@env"
+import { readUser } from './api';
 import colors from '../assets/colors/colors';
 import loginImg from '../assets/images/login.png'
 
@@ -34,10 +36,18 @@ export default function SignIn({navigation}) {
                 console.log("Not a valid email")
             }else{
                 //make api call
-                const jsonVal = JSON.stringify(data)
-                await AsyncStorage.setItem('user',jsonVal)
-                console.log(jsonVal)
-                navigation.navigate('CameraScreen')
+                readUser(READ_USER_API,data).then(async(response)=>{
+                    console.log(response)
+                    if(response && response.error){
+                        setErrorMessage(response.error)
+                    }else{
+                        console.log(response._id)
+                        await AsyncStorage.setItem('user',response._id)
+                        navigation.navigate('CameraScreen')
+                    }
+                }).catch(error=>{
+                    console.log(error)
+                })
             }
         } catch (error) {
             console.log(error)
