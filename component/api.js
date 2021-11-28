@@ -16,7 +16,7 @@ const createUser = async (url, data) => {
 }
 const readUser = async (url, data) => {
     try {
-        let response = await fetch(url, {
+        let response = await fetch(url+'?email='+data.email+'&password='+data.password, {
             method: "GET",
             headers: {
                 Accept: "application/json",
