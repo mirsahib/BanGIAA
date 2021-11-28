@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Keyboard, Image, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import formValidation from './helper';
+import {createUser} from './api'
+import {CREATE_USER_API} from "@env"
 import colors from '../assets/colors/colors';
 import welcomeImg from '../assets/images/welcome.png'
 
@@ -44,11 +46,18 @@ export default function SignUp({navigation}) {
                 setErrorMessage("Password does not match")
                 console.log("Password does not match")
             }else{
-                const jsonVal = JSON.stringify(data)
                 //make api call
-                await AsyncStorage.setItem('user',jsonVal)
-                console.log(jsonVal)
-                navigation.navigate('CameraScreen')
+                createUser(CREATE_USER_API,data).then(async (response)=>{
+                    console.log('save',response)
+                    if(response && response.userId){
+                        await AsyncStorage.setItem('userId',response.userId)
+                        navigation.navigate('CameraScreen')
+                    }else{
+                        setErrorMessage("Email already exist")
+                    }
+                }).catch(error=>{
+                    console.log(error)
+                })
             }
         } catch (error) {
             console.log(error)
