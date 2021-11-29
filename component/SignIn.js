@@ -37,11 +37,10 @@ export default function SignIn({navigation}) {
             }else{
                 //make api call
                 readUser(READ_USER_API,data).then(async(response)=>{
-                    console.log(response)
                     if(response && response.error){
                         setErrorMessage(response.error)
                     }else{
-                        console.log(response._id)
+                        console.log(response)
                         await AsyncStorage.setItem('userId',response._id)
                         navigation.navigate('CameraScreen')
                     }
