@@ -9,6 +9,6 @@ import SuggestionList from './component/SuggestionList';
 
 export default function App() {
   return (
-    <AppContainer/>
+    <CameraScreen/>
   );
 }
