@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Text,
     StyleSheet,
@@ -18,21 +18,37 @@ const data = [
     "V8",
     "Carrots ",
     "Table Cloth",
-    "Mushroom",
     "Pasta"
 ]
 
 
-export default function SuggestionList() {
+export default function SuggestionList({state,setState,name}) {
+
+    const [classItem,setClassItem]= useState(data)
+
+    useEffect(()=>{
+        let newClassItem = []
+        console.log('current',state[name])
+        data.forEach(item=>{
+            let statePropsLen = state[name].length
+            console.log('item type',typeof item,'item substr',item.substr(0,statePropsLen).toLowerCase(),'state',state[name].toLowerCase())
+            if(typeof item == 'string'&& item.substr(0,statePropsLen).toLowerCase()==state[name].toLowerCase()){
+                //console.log("item",item.substr(0,statePropsLen).toLowerCase(),"state",state[name].toLowerCase())
+                console.log('item after',item.substr(0,statePropsLen).toLowerCase(),'state',state[name].toLowerCase())
+                newClassItem.push(item)
+            }
+        })
+        console.log('newClassItem',newClassItem)
+        setClassItem(newClassItem)
+        
+    },[state[name]])
     return (
         
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                {data.map((item,index)=>{
+                {classItem.map((item,index)=>{
                     return (
-                        <TouchableOpacity key={index} style={
-                            {paddingHorizontal:2}
-                            }>
-                            <Text style={{borderRadius:10,paddingHorizontal:5,backgroundColor:colors.primary}}>{item}</Text>
+                        <TouchableOpacity key={index} style={{paddingHorizontal:2}} onPress={()=>setState({...state,[name]:item})}>
+                            <Text style={{borderRadius:10,paddingHorizontal:5,backgroundColor:colors.primary,color:'white'}}>{item}</Text>
                         </TouchableOpacity>
                     )
                 })}
@@ -47,6 +63,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         fontFamily: 'Poppins',
         fontWeight: 'bold',
-        paddingTop: 40
     },
 })
