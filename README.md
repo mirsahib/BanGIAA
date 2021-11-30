@@ -17,6 +17,15 @@ After successfull installation run
 expo start
 ```
 
+### Environment Variable
+In the route directory create a `.env` and copy paste the following.(Follow the reference to setup environment variable on expo project)
+
+```
+CREATE_USER_API=<Your Mongodb realm create user webhook URL>
+READ_USER_API=<Your Mongodb realm read user webhook URL>
+UPLOAD_DATA_API=<Your Mongodb realm create data webhook URL>
+UPLOAD_IMAGE_API=<Your Mongodb realm create user webhook URL>
+```
 ## Contribution
 
 If you want to contribute and make this project much better for other developer have a look at Issues.
