@@ -13,7 +13,6 @@ import {
     ImageBackground,
 } from 'react-native';
 import colors from '../assets/colors/colors';
-import { FontAwesome } from '@expo/vector-icons';
 import SuggestionList from './SuggestionList';
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 
@@ -21,6 +20,7 @@ import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) => {
     const [modalVisible, setModalVisible] = useState(true);
     const [keyboardStatus, setKeyboardStatus] = useState(false)
+    
 
     useEffect(() => {
         const handleKeyboardShow = Keyboard.addListener('keyboardDidShow', () => {
@@ -81,20 +81,24 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
                         <TouchableWithoutFeedback onPress={()=>{setModalVisible(!modalVisible)}}>
                             <View style={styles.centeredView}>
                                 <View style={keyboardStatus ? styles.modalViewKbOn : styles.modalView}>
-                                    <TextInput
-                                        style={styles.input}
-                                        onChangeText={text => setState({ ...state, className: text })}
-                                        placeholder={'Class Name'}
-                                        value={state.className}
-                                    />
-                                    <SuggestionList />
-                                    <TextInput
-                                        style={styles.input}
-                                        onChangeText={text => setState({ ...state, productName: text })}
-                                        placeholder={'Product Name'}
-                                        value={state.productName}
-                                    />
-                                    <SuggestionList />
+                                    <View style={{marginBottom:10}}>
+                                        <TextInput
+                                            style={styles.input}
+                                            onChangeText={text => setState({ ...state, className: text })}
+                                            placeholder={'Class Name'}
+                                            value={state.className}
+                                        />
+                                    </View>
+                                    <SuggestionList name={"className"} state={state} setState = {setState} />
+                                    <View style={{marginBottom:10}}>
+                                        <TextInput
+                                            style={styles.input}
+                                            onChangeText={text => setState({ ...state, productName: text })}
+                                            placeholder={'Product Name'}
+                                            value={state.productName}
+                                        />
+                                    </View>
+                                    <SuggestionList name={"productName"} state={state} setState={setState}/>
                                     <View style={{ flexDirection: 'row' }}>
                                         <Text style={{ fontSize: 18, color: "#FFF", paddingTop: 5 }}>Unit :</Text>
                                         <RadioGroup style={{ flexDirection: 'row', }} color={colors.tertiary}
@@ -146,7 +150,7 @@ const styles = StyleSheet.create({
     modalView: {
         backgroundColor: colors.secondary,
         width: Dimensions.get('window').width,
-        height: '45%',
+        height: '50%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         alignItems: 'center',
@@ -156,7 +160,7 @@ const styles = StyleSheet.create({
     modalViewKbOn: {
         backgroundColor: colors.secondary,
         width: Dimensions.get('window').width,
-        height: '67%',
+        height: '75%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         alignItems: 'center',
@@ -200,7 +204,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "#2F2E41",
         opacity: 60,
-        paddingLeft: 15
+        paddingLeft: 15,
     },
 });
 
