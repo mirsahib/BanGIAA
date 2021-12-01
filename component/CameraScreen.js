@@ -67,6 +67,18 @@ export default function CameraScreen({ navigation }) {
                     console.log('data',data)
                     const realmRes = await uploadData(UPLOAD_DATA_API,data)
                     console.log('realm res',realmRes)
+                    const {image,measuringUnit,userId,...suggestionList}= data
+                    // append data to AsyncStorage
+                    let prevStoredData = await AsyncStorage.getItem('suggestionList')
+                    if(prevStoredData){
+                        let prevParseData = JSON.parse(prevStoredData)
+                        console.log('prevParseData',prevParseData)
+                        prevParseData.push(suggestionList)
+                        await AsyncStorage.setItem('suggestionList',JSON.stringify(prevParseData))
+                    }else{
+                        await AsyncStorage.setItem('suggestionList',JSON.stringify([suggestionList]))
+                    }
+
                     setData({className:'',productName:'',measuringUnit:''})
                     //navigation.navigate('ImageScreen')
                 }
