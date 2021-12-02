@@ -1,3 +1,5 @@
+import React, { useEffect, useRef } from 'react';
+
 const isEmpty = (data)=>{
     let result = true
     let objArr = Object.keys(data)
@@ -16,7 +18,17 @@ const validateEmail = (email)=>{
 }
 
 
+const useDidMountEffect = (func, deps) => {
+    const didMount = useRef(false);
+
+    useEffect(() => {
+        if (didMount.current) func();
+        else didMount.current = true;
+    }, deps);
+}
+
 export default {
     isEmpty,
     validateEmail,
+    useDidMountEffect
 }

@@ -1,16 +1,19 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState,useEffect,useContext} from 'react';
 import { StyleSheet, Text, View, Image, TextInput,TouchableWithoutFeedback,Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import formValidation from './helper';
 import {READ_USER_API} from "@env"
 import { readUser } from './api';
+import { AuthContext } from '../context/auth-provider';
 import colors from '../assets/colors/colors';
 import loginImg from '../assets/images/login.png'
 
-export default function SignIn({navigation}) {
+export default function SignIn({setAuth,navigation}) {
     const [keyboardStatus,setKeyboardStatus] = useState(false)
     const [data,setData] = useState({email:'',password:''})
     const [errorMessage,setErrorMessage] = useState("")
+    //const {auth,handleAuth} = useContext(AuthContext)
+    console.log('sign in ',name)
 
     useEffect(()=>{
         const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
@@ -42,6 +45,7 @@ export default function SignIn({navigation}) {
                     }else{
                         console.log(response)
                         await AsyncStorage.setItem('userId',response._id)
+                        setAuth(true)
                         navigation.navigate('CameraScreen')
                     }
                 }).catch(error=>{
