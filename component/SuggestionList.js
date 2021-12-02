@@ -6,19 +6,6 @@ import {
 } from 'react-native';
 import colors from '../assets/colors/colors';
 
-const data = [
-    "Tomatoes",
-    "Mushroom",
-    "Flower",
-    "Cheese",
-    "Wine",
-    "V8",
-    "Carrots ",
-    "Table Cloth",
-    "Pasta"
-]
-
-
 
 export default function SuggestionList({inputState,setInputState,list,name}) {
 
