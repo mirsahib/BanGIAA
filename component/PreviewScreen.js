@@ -15,12 +15,41 @@ import {
 import colors from '../assets/colors/colors';
 import SuggestionList from './SuggestionList';
 import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) => {
     const [modalVisible, setModalVisible] = useState(true);
     const [keyboardStatus, setKeyboardStatus] = useState(false)
-    
+    const [suggestionList,setSuggestionList] = useState([])
+    const [classList,setClassList] = useState([])
+    const [productList,setProductList] = useState([])
+
+    useEffect(()=>{
+        //console.log('component called')
+        async function getSuggestedData(){
+            try {
+                let data = await AsyncStorage.getItem('suggestionList')
+                console.log('async data',data)
+                return await JSON.parse(data)
+            } catch (error) {
+                console.log('async error',error)
+            }
+        }
+        try {
+            getSuggestedData().then((data)=>{
+                setSuggestionList(data)
+                console.log('didMount suggestionList',suggestionList)
+                let newClassList = data.map(item=>item.className)
+                console.log('didMount newClassList',newClassList)
+                setClassList(newClassList)
+            }).catch(error=>console.log('error callback',error))
+        } catch (error) {
+            console.log('error componentDidMount',error)
+        }
+    },[])
+
 
     useEffect(() => {
         const handleKeyboardShow = Keyboard.addListener('keyboardDidShow', () => {
@@ -36,11 +65,32 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
         };
     }, [keyboardStatus])
 
+    useEffect(()=>{
+        if(suggestionList.length>0){
+            console.log(suggestionList.length)
+            try {
+                let newProductList = suggestionList.filter((item)=>item.className===state.className)
+                                                .map(item=>item.productName)
+
+                let newClassList = []
+                suggestionList.forEach(item=>{
+                    let stateClassNameLen = state.className.length
+                    if(item.className.substr(0,stateClassNameLen).toLowerCase()===state.className.toLowerCase()){
+                        if(!newClassList.includes(item.className)){
+                            newClassList.push(item.className)
+                        }
+                    }
+                })
+                setClassList(newClassList)
+                setProductList(newProductList)
+            } catch (error) {
+                console.log('error on propsChange',error)
+            }
+        }
+    },[state.className])
+
     const handleModelVisibility = () => {
         setModalVisible(!modalVisible)
-    }
-    const handlePreview = () => {
-        console.log('click')
     }
 
     const onSelect = (index, value) => {
@@ -89,7 +139,7 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
                                             value={state.className}
                                         />
                                     </View>
-                                    <SuggestionList name={"className"} state={state} setState = {setState} />
+                                    <SuggestionList name={"className"} inputState={state} setInputState = {setState} list={classList} />
                                     <View style={{marginBottom:10}}>
                                         <TextInput
                                             style={styles.input}
@@ -98,7 +148,7 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
                                             value={state.productName}
                                         />
                                     </View>
-                                    <SuggestionList name={"productName"} state={state} setState={setState}/>
+                                    <SuggestionList name={"productName"} inputState={state} setInputState={setState} list={productList}/>
                                     <View style={{ flexDirection: 'row' }}>
                                         <Text style={{ fontSize: 18, color: "#FFF", paddingTop: 5 }}>Unit :</Text>
                                         <RadioGroup style={{ flexDirection: 'row', }} color={colors.tertiary}
