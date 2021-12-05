@@ -7,6 +7,8 @@ import {UPLOAD_IMAGE_API,UPLOAD_DATA_API} from "@env"
 import colors from '../assets/colors/colors';
 import PreviewScreen from './PreviewScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 
 export default function CameraScreen({ navigation }) {
@@ -16,6 +18,7 @@ export default function CameraScreen({ navigation }) {
     const [flashMode, setFlashMode] = useState('off')
     const [data,setData] = useState({className:'',productName:'',measuringUnit:''})
     const cameraRef = useRef(null)
+    const [spinner,setSpinner] = useState(false)
 
     useEffect(async () => {
         try {
@@ -25,6 +28,7 @@ export default function CameraScreen({ navigation }) {
             console.log(error)
         }
     }, [])
+    
 
     const takePicture = async () => {
         if (cameraRef) {
@@ -34,9 +38,22 @@ export default function CameraScreen({ navigation }) {
                 console.log('image', data.uri)
                 setPreviewVisible(true)
                 setCapturedImage(data)
+                return data
             } catch (error) {
                 console.log(error)
             }
+        }
+    }
+    const handlePicture = async()=>{
+        try {
+            setSpinner(true)//spinner on
+            let result = await takePicture()
+            if(result){
+                console.log('result',result)
+                setSpinner(false)//spinner off
+            }
+        } catch (error) {
+            console.log('handlePicture',error)
         }
     }
     const handleFlashMode = () => {
@@ -92,6 +109,11 @@ export default function CameraScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Spinner
+                visible={spinner}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+            />
             {previewVisible && captureImage ?
                 (<PreviewScreen photo={captureImage} state={data} setState={setData} handleSaveBtn={handleSaveBtn} handleRetake={handleRetakeBtn}/>) :
                 <Camera
@@ -153,7 +175,7 @@ export default function CameraScreen({ navigation }) {
                                 }}
                             >
                                 <TouchableOpacity
-                                    onPress={takePicture}
+                                    onPress={handlePicture}
                                     style={{
                                         width: 70,
                                         height: 70,
