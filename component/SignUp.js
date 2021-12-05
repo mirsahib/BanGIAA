@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Keyboard, Image, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import { ToastAndroid,StyleSheet, Text, View, Keyboard, Image, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import formValidation from './helper';
 import {createUser} from './api'
@@ -51,6 +51,7 @@ export default function SignUp({navigation}) {
                 createUser(CREATE_USER_API,userData).then(async (response)=>{
                     console.log('save',response)
                     if(response && response.userId){
+                        ToastAndroid.show('SignUp Successful', ToastAndroid.SHORT);
                         await AsyncStorage.setItem('userId',response.userId)
                         navigation.navigate('CameraScreen')
                     }else{

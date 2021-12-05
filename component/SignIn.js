@@ -1,5 +1,5 @@
 import React, { useState,useEffect} from 'react';
-import { StyleSheet, Text, View, Image, TextInput,TouchableWithoutFeedback,Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { ToastAndroid,StyleSheet, Text, View, Image, TextInput,TouchableWithoutFeedback,Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import formValidation from './helper';
 import {READ_USER_API} from "@env"
@@ -41,6 +41,7 @@ export default function SignIn({navigation}) {
                         setErrorMessage(response.error)
                     }else{
                         console.log(response)
+                        ToastAndroid.show('SignIn Successful', ToastAndroid.SHORT);
                         await AsyncStorage.setItem('userId',response._id)
                         navigation.navigate('CameraScreen')
                     }
