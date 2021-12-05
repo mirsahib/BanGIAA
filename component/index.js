@@ -1,21 +1,34 @@
-import * as React from 'react';
+import React,{useState,useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import CameraScreen from './CameraScreen';
-import ImageList from './ImageList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Authorised from './Authorised';
+import UnAuthorised from './UnAuthorised';
 
 const Stack = createNativeStackNavigator();
 export default function AppContainer(){
+    const [auth,setAuth] = useState(false)
+
+    useEffect(()=>{
+        async function handleAuth(){
+            try {
+                let data = await AsyncStorage.getItem('userId')
+                if(data!=null){
+                    console.log('auth',data)
+                    setAuth(true)
+                }
+            } catch (error) {
+                console.log('auth load error',error)
+            }
+        }
+        handleAuth()
+    },[])
+
     return(
         <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name='SignUp' component={SignUp} options={{headerShown:false}}/>
-                <Stack.Screen name='SignIn' component={SignIn} options={{headerShown:false}}/>
-                <Stack.Screen name='CameraScreen' component={CameraScreen} options={{headerShown:false}}/>
-                <Stack.Screen name='ImageScreen' component={ImageList} options={{headerShown:false}}/>                
-            </Stack.Navigator>
+            {
+                auth?(<Authorised/>):(<UnAuthorised/>)
+            }
         </NavigationContainer>
     )
 }
