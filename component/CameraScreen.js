@@ -57,6 +57,7 @@ export default function CameraScreen({ navigation }) {
         }
     }
     const handleFlashMode = () => {
+        //AsyncStorage.removeItem('userId')
         console.log(flashMode)
         if (flashMode === 'on') {
             setFlashMode('off')
