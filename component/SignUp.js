@@ -6,12 +6,15 @@ import {createUser} from './api'
 import {CREATE_USER_API} from "@env"
 import colors from '../assets/colors/colors';
 import welcomeImg from '../assets/images/welcome.png'
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 export default function SignUp({navigation}) {
     const [isChecked, setChecked] = useState(false);
     const [keyboardStatus,setKeyboardStatus] = useState(false)
     const [data,setData] = useState({email:'',password:'',confirmPassword:''})
     const [errorMessage,setErrorMessage] = useState("")
+    const [spinner,setSpinner] = useState(false)
 
     useEffect(()=>{
         const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
@@ -69,12 +72,21 @@ export default function SignUp({navigation}) {
     const handleClearBtn = ()=>{
         setData({email:'',password:'',confirmPassword:''})   
     }
+
+    const handleErrorMessage = ()=>{
+        setErrorMessage("")
+    }
     
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
+            <Spinner
+                visible={spinner}
+                textContent={'Loadin...'}
+                textStyle={styles.spinnerTextStyle}
+            />
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
@@ -87,6 +99,7 @@ export default function SignUp({navigation}) {
                                 placeholder={'Enter Email Address'}
                                 onChangeText={text=>setData({...data,email:text})}
                                 value={data.email}
+                                onFocus={handleErrorMessage}
                             />
                             {/* onchange form validation here*/}
                             {/* {errorMessage ? <Text style={{color:'white'}}>{errorMessage}</Text>:<Text style={{color:'white'}}></Text>} */}
@@ -98,6 +111,7 @@ export default function SignUp({navigation}) {
                                 secureTextEntry={true}
                                 onChangeText={text=>setData({...data,password:text})}
                                 value={data.password}
+                                onFocus={handleErrorMessage}
                             />
                             {/* onchange form validation here*/}
                             {/* {errorMessage ? <Text style={{color:'white'}}>{errorMessage}</Text>:<Text style={{color:'white'}}></Text>} */}
@@ -109,6 +123,7 @@ export default function SignUp({navigation}) {
                                 secureTextEntry={true}
                                 onChangeText={text=>setData({...data,confirmPassword:text})}
                                 value={data.confirmPassword}
+                                onFocus={handleErrorMessage}
                             />
                             {errorMessage ? <Text style={{color:'white'}}>{errorMessage}</Text>:<Text style={{color:'white'}}></Text>}
                         </View>

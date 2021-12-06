@@ -6,11 +6,14 @@ import {READ_USER_API} from "@env"
 import { readUser } from './api';
 import colors from '../assets/colors/colors';
 import loginImg from '../assets/images/login.png'
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 export default function SignIn({navigation}) {
     const [keyboardStatus,setKeyboardStatus] = useState(false)
     const [data,setData] = useState({email:'',password:''})
     const [errorMessage,setErrorMessage] = useState("")
+    const [spinner,setSpinner] = useState(false)
 
     useEffect(()=>{
         const handleKeyboardShow =  Keyboard.addListener('keyboardDidShow',()=>{
@@ -36,6 +39,7 @@ export default function SignIn({navigation}) {
                 console.log("Not a valid email")
             }else{
                 //make api call
+                setSpinner(true)
                 readUser(READ_USER_API,data).then(async(response)=>{
                     if(response && response.error){
                         setErrorMessage(response.error)
@@ -43,6 +47,7 @@ export default function SignIn({navigation}) {
                         console.log(response)
                         ToastAndroid.show('SignIn Successful', ToastAndroid.SHORT);
                         await AsyncStorage.setItem('userId',response._id)
+                        setSpinner(false)
                         navigation.navigate('CameraScreen')
                     }
                 }).catch(error=>{
@@ -54,11 +59,24 @@ export default function SignIn({navigation}) {
         }
     }
 
+    const handleErrorMessage = ()=>{
+        setErrorMessage("")
+    }
+
+    const handleClearBtn = ()=>{
+        setData({email:'',password:''}) 
+    }
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
+            <Spinner
+                visible={spinner}
+                textContent={'Signin...'}
+                textStyle={styles.spinnerTextStyle}
+            />
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
@@ -70,6 +88,7 @@ export default function SignIn({navigation}) {
                             placeholder={'Enter Email Address'}
                             onChangeText={text=>setData({...data,email:text})}
                             value={data.email}
+                            onFocus={handleErrorMessage}
                         />
                         <View style={{alignItems:'center'}}>
                             <TextInput
@@ -78,6 +97,7 @@ export default function SignIn({navigation}) {
                                 secureTextEntry={true}
                                 onChangeText={text=>setData({...data,password:text})}
                                 value={data.password}
+                                onFocus={handleErrorMessage}
                             />
                             {errorMessage ? <Text style={{color:'white'}}>{errorMessage}</Text>:<Text style={{color:'white'}}></Text>}
                         </View>
@@ -88,8 +108,8 @@ export default function SignIn({navigation}) {
                                 <Text style={{ color: 'white' }}>Sign In</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={{ paddingHorizontal: 10 }}>
-                            <TouchableOpacity style={styles.buttonStyle}>
+                        <View style={{ paddingHorizontal: 10 }} >
+                            <TouchableOpacity style={styles.buttonStyle} onPress={handleClearBtn}>
                                 <Text style={{ color: 'white' }}>Clear</Text>
                             </TouchableOpacity>
                         </View>
