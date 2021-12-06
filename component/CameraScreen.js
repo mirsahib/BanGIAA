@@ -97,6 +97,7 @@ export default function CameraScreen({ navigation }) {
                     }
 
                     setData({className:'',productName:'',measuringUnit:''})
+                    setPreviewVisible(false)
                     //navigation.navigate('ImageScreen')
                 }
             }else{

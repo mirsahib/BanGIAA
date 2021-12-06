@@ -30,9 +30,15 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
         //console.log('component called')
         async function getSuggestedData(){
             try {
-                let data = await AsyncStorage.getItem('suggestionList')
-                console.log('async data',data)
-                return await JSON.parse(data)
+                let suggestionList = await AsyncStorage.getItem('suggestionList')
+                console.log('async data',suggestionList)
+                let data = []
+                if(suggestionList){
+                    console.log('suggestionList before parse',suggestionList)
+                    data= await JSON.parse(suggestionList)
+                    console.log('suggestionList before parse',data)
+                }
+                return data 
             } catch (error) {
                 console.log('async error',error)
             }
@@ -111,7 +117,7 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
                             Alert.alert('Modal has been closed.');
                             setModalVisible(!modalVisible);
                         }}>
-                        {/* <View style={{
+                        <View style={{
                             position: 'absolute',
                             left: '5%',
                             top: '10%',
@@ -125,9 +131,16 @@ const PreviewScreen = ({ photo, handleSaveBtn, handleRetake, state, setState }) 
                                     width: 25
                                 }}
                             >
-                                <FontAwesome size={24} style={{ color: colors.tertiary }} name="eye"></FontAwesome>
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: 16
+                                    }}
+                                >
+                                    ⚡️
+                                </Text>
                             </TouchableOpacity>
-                        </View> */}
+                        </View>
                         <TouchableWithoutFeedback onPress={()=>{setModalVisible(!modalVisible)}}>
                             <View style={styles.centeredView}>
                                 <View style={keyboardStatus ? styles.modalViewKbOn : styles.modalView}>
