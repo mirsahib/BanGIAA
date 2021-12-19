@@ -1,5 +1,5 @@
 
-<img src="relative/path/in/repository/to/image.svg" width="128"/>
+<img src="https://raw.githubusercontent.com/mirsahib/BanGIAA/main/assets/images/figma.png" />
 ## BanGIAA
 Bangladesh grocery image annotation app
 
