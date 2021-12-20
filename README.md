@@ -35,6 +35,8 @@ If you want to contribute and make this project much better for other developer 
 
 If you created something awesome and want to contribute then feel free to open a pull request.
 
+## Medium Article
+https://mirsahib24.medium.com/lets-build-a-serverless-expo-app-using-mongodb-realm-and-cloudinary-b018dde08717
 
 ## Reference
 [How to Properly Use Environment Variables in an Expo React Native App](https://medium.com/swlh/how-to-properly-use-environment-variables-in-an-expo-react-native-app-7ab852590b30)
